@@ -1,22 +1,39 @@
 let express = require('express')
 let mongodb = require('mongodb')
+let sanitizeHTML = require('sanitize-html')
+require('dotenv').config()
 
 let app = express()
 let db
 
 app.use(express.static('public'))
 
-let connectionString = 'mongodb+srv://arif:Arif2743@cluster0-io81u.mongodb.net/TodoApp?retryWrites=true&w=majority'
+
+let connectionString = process.env.DB_PATH
 let secondParameter = {useNewUrlParser: true, useUnifiedTopology: true}
 mongodb.connect(connectionString, secondParameter, function(err, client) {
   db = client.db()
-  app.listen(4000)
+  // app.listen(4000)
+  const port = process.env.PORT || 4000
+  app.listen(port, () => console.log(`Listening to port ${port}`))
 })
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-app.get('/', function(req, res) {
+function passwordProtected(req, res, next) {
+  res.set('WWW-Authenticate', 'Basic realm="Simple Todo App"')
+  // console.log(req.headers.authorization)
+  if (req.headers.authorization == "Basic amF2YXNjcmlwdDpqcw==") {
+    next()
+  } else {
+    res.status(401).send("Authentication required")
+  }
+}
+
+app.use(passwordProtected)
+
+app.get('/',  function(req, res) {
   db.collection('items').find().toArray(function(err, items) {
     res.send(`<!DOCTYPE html>
     <html>
@@ -40,7 +57,6 @@ app.get('/', function(req, res) {
         </div>
         
         <ul id="item-list" class="list-group pb-5">
-          
         </ul>
 
       </div>
@@ -56,16 +72,24 @@ app.get('/', function(req, res) {
   })
 })
 
-app.post('/create-item', function(req, res) {
-    db.collection('items').insertOne({text: req.body.text}, function(err, info) {
-      res.json(info.ops[0])
-    })
+app.post('/create-item',  function(req, res) {
+  let safeText = sanitizeHTML(req.body.text, {
+    allowedTags: [], 
+    allowedAttributes: {}
+  })
+  db.collection('items').insertOne({text: safeText}, function(err, info) {
+    res.json(info.ops[0])
+  })
 })
 
 app.post('/update-item', function(req, res) {
+  let safeText = sanitizeHTML(req.body.text, {
+    allowedTags: [], 
+    allowedAttributes: {}
+  })
   db.collection('items').findOneAndUpdate(
     {_id: new mongodb.ObjectID(req.body.id)},
-    {$set: {text: req.body.text}}, 
+    {$set: {text: safeText}}, 
     function() {
       res.send("Success")
     }
