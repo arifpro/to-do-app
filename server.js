@@ -1,6 +1,7 @@
 let express = require('express')
 
 let app = express()
+let db
 
 app.use(express.urlencoded({extended: false}))
 
@@ -57,8 +58,9 @@ app.get('/', function(req, res) {
 })
 
 app.post('/create-item', function(req, res) {
-    console.log(req.body.item)
-    res.send('Thank for submitting to form')
+    db.collection('items').insertOne({text: req.body.item}, function() {
+      res.send('Thank for submitting to form')
+    })
 })
 
 app.listen(4000)
