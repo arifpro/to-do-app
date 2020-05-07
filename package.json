@@ -1,0 +1,24 @@
+{
+  "name": "To-Do-App",
+  "version": "1.0.0",
+  "description": "Here we used mongodb to save the to-do data. We can create, update, delete our data.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arifpro/to-do-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arifpro/to-do-app/issues"
+  },
+  "homepage": "https://github.com/arifpro/to-do-app#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
