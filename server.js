@@ -12,8 +12,9 @@ if (port == null  ||  port == '') {
 }
 
 app.use(express.static('public'))
-let connectionString = String(process.env.DB_PATH)
-// let connectionString = 'mongodb+srv://arif:Arif2743@cluster0-io81u.mongodb.net/TodoApp?retryWrites=true&w=majority'
+console.log(process.env.DB_PATH)
+// let connectionString = String(process.env.DB_PATH)
+let connectionString = 'mongodb+srv://arif:Arif2743@cluster0-io81u.mongodb.net/TodoApp?retryWrites=true&w=majority'
 let secondParameter = {useNewUrlParser: true, useUnifiedTopology: true}
 mongodb.connect(connectionString, secondParameter, function(err, client) {
   db = client.db()
