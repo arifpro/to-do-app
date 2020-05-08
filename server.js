@@ -13,7 +13,6 @@ if (port == null  ||  port == '') {
 
 app.use(express.static('public'))
 
-
 let connectionString = process.env.DB_PATH
 let secondParameter = {useNewUrlParser: true, useUnifiedTopology: true}
 mongodb.connect(connectionString, secondParameter, function(err, client) {
