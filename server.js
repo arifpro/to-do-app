@@ -6,6 +6,11 @@ require('dotenv').config()
 let app = express()
 let db
 
+let port = process.env.PORT
+if (port == null  ||  port == '') {
+  post = 4000
+}
+
 app.use(express.static('public'))
 
 
@@ -14,7 +19,7 @@ let secondParameter = {useNewUrlParser: true, useUnifiedTopology: true}
 mongodb.connect(connectionString, secondParameter, function(err, client) {
   db = client.db()
   // app.listen(4000)
-  const port = process.env.PORT || 4000
+  // const port = process.env.PORT || 4000
   app.listen(port, () => console.log(`Listening to port ${port}`))
 })
 
