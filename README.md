@@ -7,6 +7,9 @@ This project based on JavaScript.
 * **Tools:** NodeJs, Mongodb
 * **Project for what:** To-Do App to create, update, delete daily task.
 
+## Test
+  * username: javascript
+  * password: js
 
 ## Installation
 
